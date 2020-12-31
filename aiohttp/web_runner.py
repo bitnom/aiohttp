@@ -6,7 +6,7 @@ from typing import Any, List, Optional, Set, Type
 
 from yarl import URL
 
-from .abc import AbstractAccessLogger, AbstractStreamWriter
+from .abc import AbstractAccessLogger, AbstractStreamWriter, AbstractAsyncAccessLogger
 from .http_parser import RawRequestMessage
 from .streams import StreamReader
 from .web_app import Application
@@ -372,7 +372,7 @@ class AppRunner(BaseRunner):
             for k, v in app._handler_args.items():
                 kwargs[k] = v
 
-        if not issubclass(kwargs["access_log_class"], AbstractAccessLogger):
+        if not issubclass(kwargs["access_log_class"], (AbstractAccessLogger, AbstractAsyncAccessLogger)):
             raise TypeError(
                 "access_log_class must be subclass of "
                 "aiohttp.abc.AbstractAccessLogger, got {}".format(
